@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sick_child/ui/widgets/drawer.widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +16,7 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: const Text("Enfant"),
       ),
+      drawer: const DrawerWidget(),
       body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 60.0),
           child: Column(
