@@ -80,16 +80,21 @@ class _ConnexionPageState extends State<ConnexionPage> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  OutlineButton(
-                    onPressed: () {
+                 
+                  OutlinedButton(
+           style: OutlinedButton.styleFrom(
+        shape:  RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+            side: BorderSide(
+              width: 2,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+        ),
+     onPressed: () {
                       widget.basculation();
                     },
-                    borderSide:
-                        const BorderSide(width: 1.0, color: Colors.black),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    child: const Text("Besoin d'un compte?"),
-                  ),
+    child: const Text("Besoin d'un compte?"),
+),
                 ],
               )),
         ),

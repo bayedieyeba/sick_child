@@ -19,8 +19,9 @@ class _HomePageState extends State<HomePage> {
         //drawer: const DrawerWidget(),
         body: Container(
             padding:
-                const EdgeInsets.symmetric(horizontal: 40.0, vertical: 60.0),
+                const EdgeInsets.all(20),
             child: Column(
+              
               children: [
                 GestureDetector(
                   onTap: () {
@@ -44,19 +45,24 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                Container(
-                  height: 200.0,
-                  decoration: const BoxDecoration(
-                      color: Colors.yellow,
-                      image: DecorationImage(
-                          image: AssetImage('images/hospitalise.png'),
-                          // prendre l'adaptation de limage
-                          fit: BoxFit.contain),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30))),
+                GestureDetector(
+                   onTap: () {
+                    Navigator.pushNamed(context, "/hospitalisation");
+                  },
+                  child: Container(
+                    height: 200.0,
+                    decoration: const BoxDecoration(
+                        color: Colors.yellow,
+                        image: DecorationImage(
+                            image: AssetImage('images/hospitalise.png'),
+                            // prendre l'adaptation de limage
+                            fit: BoxFit.contain),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30))),
+                  ),
                 ),
                 const SizedBox(
                   height: 20.0,

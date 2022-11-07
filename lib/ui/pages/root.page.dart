@@ -4,6 +4,7 @@ import 'package:sick_child/ui/pages/detailEnfant.page.dart';
 import 'package:sick_child/ui/pages/home.page.dart';
 import 'package:sick_child/ui/pages/liaisonAuth.page.dart';
 import 'package:sick_child/ui/pages/listeConsultation.page.dart';
+import 'package:sick_child/ui/pages/listeHospitalisation.page.dart';
 
 class RootView extends StatefulWidget {
   const RootView({Key? key}) : super(key: key);
@@ -21,9 +22,10 @@ class _RootViewState extends State<RootView> {
       routes: {
         "/": (context) => const LiaisonPageAuth(),
         "/home": (context) => const HomePage(),
-        "/consultation": (context) => const ListeConsultation(),
-        "/ajouterEnfant": (context) => const AjouterEnfant(),
-        "/detailEnfant": (context) => const DetailEnfant(),
+        "/consultation": (context) =>  ListeConsultation(),
+        "/hospitalisation" : (context) => ListeHospitalisation(),
+        "/ajouterEnfant": (context) =>  AjouterEnfant(),
+        "/detailEnfant": (context) =>  DetailEnfant(),
       },
       initialRoute: '/',
     );

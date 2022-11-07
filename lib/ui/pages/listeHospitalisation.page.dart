@@ -3,26 +3,25 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:sick_child/model/enfant.model.dart';
 import 'package:sick_child/ui/pages/detailEnfant.page.dart';
-class ListeConsultation extends StatefulWidget {
-   ListeConsultation({Key? key}) : super(key: key);
+class ListeHospitalisation extends StatefulWidget {
+   ListeHospitalisation({Key? key}) : super(key: key);
 
   @override
-  State<ListeConsultation> createState() => _ListeConsultationState();
+  State<ListeHospitalisation> createState() => _ListeHospitalisation();
 }
 
-class _ListeConsultationState extends State<ListeConsultation> {
-  String? query ;
- 
-  TextEditingController queryTextEditingController = new TextEditingController();
- 
+class _ListeHospitalisation extends State<ListeHospitalisation> {
+  String? codeEnfant ;
+
+  TextEditingController codeEnfantTextEditingController = new TextEditingController();
+
   dynamic data;
   @override
   void initState() {
     
     super.initState();
-    String url = "http://10.0.2.2:8083/api/enfants/consultation?typeConsulatation=CONSULTATION";
+    String url = "http://10.0.2.2:8083/api/enfants/consultation?typeConsulatation=HOSPITALISATION";
     http.get(Uri.parse(url))
     .then((response) {
      setState(() {
@@ -33,18 +32,18 @@ class _ListeConsultationState extends State<ListeConsultation> {
       print(err);
     });
   }
-  
-  void _search(String? query) {
-    // String url = "http://10.0.2.2:8083/api/enfants/consultation?typeConsulatation=CONSULTATION";
-    // http.get(Uri.parse(url))
-    // .then((response) {
-    //  setState(() {
-    //     data = json.decode(response.body);
-    //  });
-    // })
-    // .catchError((err){
-    //   print(err);
-    // });
+  void _search(String? codeEnfant) {
+    String url = "http://10.0.2.2:8083/api/enfants/${codeEnfant}";
+    http.get(Uri.parse(url))
+    .then((response) {
+     setState(() {
+        data = json.decode(response.body);
+     });
+    })
+    .catchError((err){
+      print(err);
+    })
+    ;
   }
   @override
   Widget build(BuildContext context) {
@@ -52,7 +51,7 @@ class _ListeConsultationState extends State<ListeConsultation> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("En Consultation",
+        title: Text("En Hospitalisation",
             style: GoogleFonts.acme(
                 color: Colors.black,
                 fontSize: 30,
@@ -69,10 +68,10 @@ class _ListeConsultationState extends State<ListeConsultation> {
                     child: TextFormField(
                       onChanged: (value){
                         setState(() {
-                          query = value;
+                          codeEnfant = value;
                         });
                       },
-                      controller: queryTextEditingController,
+                      controller: codeEnfantTextEditingController,
                     decoration:  InputDecoration(
                   contentPadding: const EdgeInsets.all(10),
                   border: OutlineInputBorder(
@@ -85,8 +84,8 @@ class _ListeConsultationState extends State<ListeConsultation> {
                 IconButton(
                   onPressed: (){
                     setState(() {
-                      query = queryTextEditingController.text;
-                      _search(query);
+                      codeEnfant = codeEnfantTextEditingController.text;
+                      _search(codeEnfant);
 
                     });
                     
