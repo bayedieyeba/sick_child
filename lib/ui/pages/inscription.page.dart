@@ -1,7 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:sick_child/utils/app_color.dart';
 
 class InscriptionPage extends StatefulWidget {
   final Function basculation;
@@ -112,7 +111,7 @@ class _InscriptionPageState extends State<InscriptionPage> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         // appliquer la logique
@@ -120,28 +119,31 @@ class _InscriptionPageState extends State<InscriptionPage> {
                         Navigator.pushNamed(context, "/");
                       }
                     },
-                    color: AppColor.primaryColor,
+                    style: TextButton.styleFrom(
+                      primary: Colors.blue,
+                      onSurface: Colors.red,
+                    ),
                     child: const Text("S'inscrire"),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
+                    // shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(20.0)),
                   ),
                   const SizedBox(
                     height: 10.0,
                   ),
-                                OutlinedButton(
-           style: OutlinedButton.styleFrom(
-        shape:  RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-            side: BorderSide(
-              width: 2,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-        ),
-     onPressed: () {
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      side: BorderSide(
+                        width: 2,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    onPressed: () {
                       widget.basculation();
                     },
-    child: const Text("Déja un compte?"),
-),
+                    child: const Text("Déja un compte?"),
+                  ),
                 ],
               )),
         ),

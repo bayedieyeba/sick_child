@@ -1,7 +1,10 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:sick_child/utils/app_color.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ConnexionPage extends StatefulWidget {
   final Function basculation;
@@ -12,8 +15,9 @@ class ConnexionPage extends StatefulWidget {
 }
 
 class _ConnexionPageState extends State<ConnexionPage> {
-  String email = '';
-  String motDePasse = '';
+  String login = '';
+  String password = '';
+  bool _isLoading = false;
 
   final _keyForm = GlobalKey<FormState>();
   @override
@@ -41,13 +45,18 @@ class _ConnexionPageState extends State<ConnexionPage> {
                   const SizedBox(
                     height: 10.0,
                   ),
+                  _isLoading
+                      ? const CircularProgressIndicator()
+                      : const SizedBox(
+                          height: 10.0,
+                        ),
                   TextFormField(
                     decoration: const InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(),
                     ),
                     validator: (val) => val!.isEmpty ? 'Entrez un email' : null,
-                    onChanged: (val) => email = val,
+                    onChanged: (val) => login = val,
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -60,45 +69,87 @@ class _ConnexionPageState extends State<ConnexionPage> {
                     obscureText: true,
                     validator: (val) =>
                         val!.isEmpty ? 'Entrez un mot de passe' : null,
-                    onChanged: (val) => motDePasse = val,
+                    onChanged: (val) => password = val,
                   ),
                   const SizedBox(
                     height: 10.0,
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       if (_keyForm.currentState!.validate()) {
-                        Navigator.pop(context);
-                        Navigator.pushNamed(context, "/home");
+                        _login(login, password);
                       }
                     },
-                    color: AppColor.primaryColor,
+                    style: TextButton.styleFrom(
+                      primary: Colors.blue,
+                      onSurface: Colors.red,
+                    ),
+                    //color: AppColor.primaryColor,
                     child: const Text("Connexion"),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
+                    // shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(20.0)),
                   ),
                   const SizedBox(
                     height: 10.0,
                   ),
-                 
                   OutlinedButton(
-           style: OutlinedButton.styleFrom(
-        shape:  RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-            side: BorderSide(
-              width: 2,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-        ),
-     onPressed: () {
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0)),
+                      side: BorderSide(
+                        width: 2,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    onPressed: () {
                       widget.basculation();
                     },
-    child: const Text("Besoin d'un compte?"),
-),
+                    child: const Text("Besoin d'un compte?"),
+                  ),
                 ],
               )),
         ),
       ),
     );
+  }
+
+  _login(
+    String login,
+    String password,
+  ) async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      var response = await http.post(
+        Uri.parse('http://10.0.2.2:5000/api/user/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'login': login,
+          'password': password,
+        }),
+      );
+      if (response.statusCode == 200) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        await pref.setString("user", response.body);
+
+        Navigator.pop(context);
+        Navigator.pushNamed(context, "/home");
+      } else {
+        Fluttertoast.showToast(
+          msg: 'Identifiants invalides',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+        );
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
